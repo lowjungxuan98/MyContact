@@ -6,7 +6,8 @@
 //
 
 import Foundation
+import RxRelay
 
 class ContactDetailViewModel: BaseViewModel {
-    var data: Person? = nil
+    var data: BehaviorRelay<Person?> = BehaviorRelay(value: nil)
 }

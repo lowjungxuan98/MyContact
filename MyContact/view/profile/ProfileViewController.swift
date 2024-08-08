@@ -77,18 +77,21 @@ class ProfileViewController: BaseViewController<ProfileViewModel> {
             button.trailingAnchor.constraint(equalTo: vStack.trailingAnchor, constant: -15),
         ])
         
-        viewModel.data
-            .asObservable()
-            .subscribe(onNext: { [weak self] person in
-                if let person = person {
-                    self?.avatar.configure(with: person.nameShortForm, font: .systemFont(ofSize: 40))
-                    self?.nameLabel.text = "\(person.firstName) \(person.lastName)"
-                    self?.emailLabel.text = person.email
-                    self?.dobLabel.text = person.dob
-                }
-                
+        disposeBag.insert(
+            viewModel.data
+                .asObservable()
+                .subscribe(onNext: { [weak self] person in
+                    if let person = person {
+                        self?.avatar.configure(with: person.nameShortForm, font: .systemFont(ofSize: 40))
+                        self?.nameLabel.text = "\(person.firstName) \(person.lastName)"
+                        self?.emailLabel.text = person.email
+                        self?.dobLabel.text = person.dob
+                    }
+                }),
+            button.rx.tap.bind(onNext: { _ in
+                self.viewModel.selectedPerson.accept(self.viewModel.data.value)
             })
-            .disposed(by: disposeBag)
+        )
     }
     
     override func viewDidAppear(_ animated: Bool) {

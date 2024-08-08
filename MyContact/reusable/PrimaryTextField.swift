@@ -87,9 +87,16 @@ class PrimaryTextField: UIStackView {
         addArrangedSubview(hStack)
     }
     
-    func configure(labelText: String? = nil, placeholder: String, text: String? = nil, leading: UIImage? = nil, trailing: UIImage? = nil) {
+    func configure(labelText: String? = nil, placeholder: String, text: String? = nil, leading: UIImage? = nil, trailing: UIImage? = nil, required: Bool = true) {
         if let labelText = labelText {
-            label.text = labelText
+            if required {
+                let attributedString = NSMutableAttributedString(string: labelText)
+                let asterisk = NSAttributedString(string: "*", attributes: [.foregroundColor: ColorPalette.shared.red_ED1C2E])
+                attributedString.append(asterisk)
+                label.attributedText = attributedString
+            } else {
+                label.text = labelText
+            }
             label.isHidden = false
         }
         textField.text = text

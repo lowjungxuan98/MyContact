@@ -17,4 +17,6 @@ class MyImage {
     let icDashboard: UIImage = UIImage(named: "ic_dashboard")!
     let icPerson: UIImage = UIImage(named: "ic_profile")!
     let icBack: UIImage = UIImage(named: "ic_back")!
+    let icEmail: UIImage = UIImage(named: "ic_email")!
+    let icCalendar: UIImage = UIImage(named: "ic_calendar")!
 }

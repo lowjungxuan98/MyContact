@@ -89,7 +89,7 @@ class DashboardViewController: BaseViewController<DashboardViewModel> {
                 self.viewModel.search()
             }),
             fabButton.rx.tap.bind(onNext: { _ in
-                self.routeToContactDetail()
+                self.viewModel.selectedPerson.accept(nil)
             })
         )
     }

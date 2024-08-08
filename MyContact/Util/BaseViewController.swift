@@ -56,7 +56,6 @@ class BaseViewController<VM>: UIViewController where VM: BaseViewModel {
         let view = UIButton()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setImage(MyImage.shared.icBack, for: .normal)
-        view.heightAnchor.constraint(equalToConstant: 18).isActive = true
         view.widthAnchor.constraint(equalToConstant: 18).isActive = true
         return view
     }()
@@ -147,7 +146,7 @@ class BaseViewController<VM>: UIViewController where VM: BaseViewModel {
 extension BaseViewController {
     func routeToContactDetail() {
         let vm = ContactDetailViewModel()
-        vm.data = viewModel.selectedPerson.value
+        vm.data = viewModel.selectedPerson
         let vc = ContactDetailViewController(viewModel: vm)
         navigationController?.pushViewController(vc, animated: true)
     }

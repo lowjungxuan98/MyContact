@@ -31,6 +31,9 @@
 		546EAE092C65248C00C0C979 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EAE082C65248C00C0C979 /* LoginViewController.swift */; };
 		546EAE0E2C652B7900C0C979 /* ContactDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EAE0D2C652B7900C0C979 /* ContactDetailViewController.swift */; };
 		546EAE102C652B8700C0C979 /* ContactDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546EAE0F2C652B8700C0C979 /* ContactDetailViewModel.swift */; };
+		54926E1D2C653AB4003D87D3 /* FormTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54926E1C2C653AB4003D87D3 /* FormTableViewCell.swift */; };
+		54926E212C65489E003D87D3 /* Ext+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54926E202C65489E003D87D3 /* Ext+TableView.swift */; };
+		54926E232C6550D1003D87D3 /* FormButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54926E222C6550D1003D87D3 /* FormButtonTableViewCell.swift */; };
 		54BD54402C648B2600E7D867 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BD543F2C648B2600E7D867 /* AppDelegate.swift */; };
 		54BD54422C648B2600E7D867 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BD54412C648B2600E7D867 /* SceneDelegate.swift */; };
 		54BD54442C648B2600E7D867 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BD54432C648B2600E7D867 /* ViewController.swift */; };
@@ -65,6 +68,9 @@
 		546EAE082C65248C00C0C979 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		546EAE0D2C652B7900C0C979 /* ContactDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailViewController.swift; sourceTree = "<group>"; };
 		546EAE0F2C652B8700C0C979 /* ContactDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailViewModel.swift; sourceTree = "<group>"; };
+		54926E1C2C653AB4003D87D3 /* FormTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTableViewCell.swift; sourceTree = "<group>"; };
+		54926E202C65489E003D87D3 /* Ext+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+TableView.swift"; sourceTree = "<group>"; };
+		54926E222C6550D1003D87D3 /* FormButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormButtonTableViewCell.swift; sourceTree = "<group>"; };
 		54BD543C2C648B2600E7D867 /* MyContact.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyContact.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54BD543F2C648B2600E7D867 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		54BD54412C648B2600E7D867 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -107,6 +113,7 @@
 				54046EB22C64C41500477072 /* Utility.swift */,
 				54046EB62C64CB8C00477072 /* BaseViewController.swift */,
 				54046EB82C64D22000477072 /* Ext+UIView.swift */,
+				54926E202C65489E003D87D3 /* Ext+TableView.swift */,
 				54046EC12C64E44C00477072 /* ColorPalette.swift */,
 				54046EC52C64EC2600477072 /* BaseViewModel.swift */,
 				54046ECF2C64FFA300477072 /* MyImage.swift */,
@@ -167,10 +174,20 @@
 		546EAE0B2C652A7400C0C979 /* contact detail */ = {
 			isa = PBXGroup;
 			children = (
+				54926E1B2C653A80003D87D3 /* Cell */,
 				546EAE0D2C652B7900C0C979 /* ContactDetailViewController.swift */,
 				546EAE0F2C652B8700C0C979 /* ContactDetailViewModel.swift */,
 			);
 			path = "contact detail";
+			sourceTree = "<group>";
+		};
+		54926E1B2C653A80003D87D3 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				54926E1C2C653AB4003D87D3 /* FormTableViewCell.swift */,
+				54926E222C6550D1003D87D3 /* FormButtonTableViewCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		54BD54332C648B2600E7D867 = {
@@ -363,8 +380,10 @@
 				54046ED22C65053900477072 /* DashboardViewController.swift in Sources */,
 				54046EC22C64E44C00477072 /* ColorPalette.swift in Sources */,
 				54046ECA2C64EDE100477072 /* ProfileViewController.swift in Sources */,
+				54926E232C6550D1003D87D3 /* FormButtonTableViewCell.swift in Sources */,
 				54046EB72C64CB8C00477072 /* BaseViewController.swift in Sources */,
 				54046EAF2C64BF5C00477072 /* LocalStorage.swift in Sources */,
+				54926E1D2C653AB4003D87D3 /* FormTableViewCell.swift in Sources */,
 				546EAE102C652B8700C0C979 /* ContactDetailViewModel.swift in Sources */,
 				54046ECC2C64EE3100477072 /* DashboardViewModel.swift in Sources */,
 				54046EB32C64C41500477072 /* Utility.swift in Sources */,
@@ -379,6 +398,7 @@
 				54046ED42C65177500477072 /* ContactHeaderView.swift in Sources */,
 				54046EB52C64C5AC00477072 /* LoginViewModel.swift in Sources */,
 				54046E992C649B6500477072 /* MainTabBarController.swift in Sources */,
+				54926E212C65489E003D87D3 /* Ext+TableView.swift in Sources */,
 				54046EC82C64EC4100477072 /* ProfileViewModel.swift in Sources */,
 				54046EC62C64EC2600477072 /* BaseViewModel.swift in Sources */,
 				546EAE0E2C652B7900C0C979 /* ContactDetailViewController.swift in Sources */,
