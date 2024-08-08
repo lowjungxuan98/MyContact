@@ -20,6 +20,7 @@ protocol FormType {
     func placeholder2() -> String
     func icon2() -> UIImage
     func required2() -> Bool
+    func isEnable2() -> Bool
 }
 
 extension FormType {
@@ -28,6 +29,10 @@ extension FormType {
     }
     
     func required2() -> Bool {
+        return true
+    }
+    
+    func isEnable2() -> Bool {
         return true
     }
 }
@@ -98,6 +103,10 @@ class SubInformationForm: FormType {
     func required2() -> Bool {
         false
     }
+    
+    func isEnable2() -> Bool {
+        false
+    }
 }
 
 class FormTableViewCell: UITableViewCell {
@@ -136,6 +145,9 @@ class FormTableViewCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
+    var datePicked: ((Date) -> Void)?
+    var currentDate: String?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -180,6 +192,20 @@ class FormTableViewCell: UITableViewCell {
             placeholder: form.placeholder2(),
             leading: form.icon2(),
             required: form.required2()
+        )
+        
+        if !form.isEnable2() {
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(openDatePicker))
+            textField2.textField.addGestureRecognizer(tapGesture)
+        }
+    }
+    
+    @objc func openDatePicker() {
+        let calenderPicker = CustomizePopupDatePickerView(currentDate?.toDate() ?? Date.now)
+        calenderPicker.display(
+            doneHandler: { [weak self] date in
+                self?.datePicked?(date)
+            }
         )
     }
 }

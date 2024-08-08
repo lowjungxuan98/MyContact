@@ -10,4 +10,5 @@ target 'MyContact' do
   pod 'RxBiBinding'
   pod 'Toast-Swift'
   pod 'IQKeyboardManagerSwift'
+  pod 'SwiftDate'
 end

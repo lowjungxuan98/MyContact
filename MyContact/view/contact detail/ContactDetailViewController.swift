@@ -122,6 +122,10 @@ class ContactDetailViewController: BaseViewController<ContactDetailViewModel> {
             let form = SubInformationForm()
             cell.configure(with: form)
             cell.selectionStyle = .none
+            cell.currentDate = viewModel.data.value?.dob
+            cell.datePicked = { date in
+                self.viewModel.dobRelay.accept(date.toString())
+            }
             disposeBag.insert(
                 cell.textField1.textField.rx.text <-> viewModel.emailRelay,
                 cell.textField2.textField.rx.text <-> viewModel.dobRelay
