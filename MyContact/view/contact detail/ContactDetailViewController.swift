@@ -148,13 +148,15 @@ class ContactDetailViewController: BaseViewController<ContactDetailViewModel> {
                     .bind { _ in
                         print("abudebug \(String(describing: self.viewModel.newData))")
                         if let person = self.viewModel.newData {
-                            if cell.primary.titleLabel?.text == "Update" {
-                                DataManager.shared.updatePerson(person)
-                            } else {
-                                DataManager.shared.addPerson(person)
-                            }
-                            self.showToast("\(cell.primary.titleLabel?.text ?? "") Sucessfully") { didTap in
-                                self.navigationController?.popViewController(animated: true)
+                            if self.validateFields() {
+                                if cell.primary.titleLabel?.text == "Update" {
+                                    DataManager.shared.updatePerson(person)
+                                } else {
+                                    DataManager.shared.addPerson(person)
+                                }
+                                self.showToast("\(cell.primary.titleLabel?.text ?? "") Successfully") { didTap in
+                                    self.navigationController?.popViewController(animated: true)
+                                }
                             }
                         }
                     },
@@ -173,6 +175,33 @@ class ContactDetailViewController: BaseViewController<ContactDetailViewModel> {
         }
         tableView.reloadData()
     }
+    
+    func validateFields() -> Bool {
+           guard let firstName = viewModel.firstNameRelay.value, !firstName.isEmpty, !firstName.contains(" ") else {
+               showToast("First name cannot be empty or contain spaces")
+               return false
+           }
+           
+           guard let lastName = viewModel.lastNameRelay.value, !lastName.isEmpty, !lastName.contains(" ") else {
+               showToast("Last name cannot be empty or contain spaces")
+               return false
+           }
+           
+           if let email = viewModel.emailRelay.value, !email.isEmpty {
+               if !isValidEmail(email) {
+                   showToast("Invalid email format")
+                   return false
+               }
+           }
+           
+           return true
+       }
+       
+       func isValidEmail(_ email: String) -> Bool {
+           let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Z0-9a-z.-]+\\.[A-Za-z]{2,64}"
+           let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+           return emailTest.evaluate(with: email)
+       }
 }
 
 extension ContactDetailViewController: UITableViewDataSource, UITableViewDelegate {
