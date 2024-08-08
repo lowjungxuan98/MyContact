@@ -108,6 +108,20 @@ class ContactDetailViewController: BaseViewController<ContactDetailViewModel> {
                     "Update"
                 }
             }(), for: .normal)
+            disposeBag.insert(
+                cell.primary.rx.tap
+                    .bind { _ in
+                        self.showToast("Sucessfully") { didTap in
+                            self.navigationController?.popViewController(animated: true)
+                        }
+                    },
+                cell.secondary.rx.tap
+                    .bind(onNext: { _ in
+                        self.showToast("Deleted") { didTap in
+                            self.navigationController?.popViewController(animated: true)
+                        }
+                    })
+            )
             cell.secondary.isHidden = viewModel.data.value == nil
             cells.append(cell)
         }

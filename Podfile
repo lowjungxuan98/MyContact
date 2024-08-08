@@ -4,9 +4,10 @@
 target 'MyContact' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
-
+  
   pod 'RxSwift'
   pod 'RxCocoa'
   pod 'RxBiBinding'
-#  pod 'RxRealm'
+  pod 'Toast-Swift'
+  pod 'IQKeyboardManagerSwift'
 end

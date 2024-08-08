@@ -37,7 +37,7 @@ class DashboardViewController: BaseViewController<DashboardViewModel> {
         view.backgroundColor = .clear
         view.separatorStyle = .none
         view.sectionHeaderTopPadding = .zero
-        view.sectionFooterHeight = 0;
+        view.sectionFooterHeight = 0
         return view
     }()
     
@@ -56,8 +56,9 @@ class DashboardViewController: BaseViewController<DashboardViewModel> {
         view.heightAnchor.constraint(equalToConstant: 65).isActive = true
         return view
     }()
-
     
+    private var vStackBottomConstraint: NSLayoutConstraint!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -67,14 +68,16 @@ class DashboardViewController: BaseViewController<DashboardViewModel> {
         contentView.addSubview(vStack)
         contentView.addSubview(fabButton)
         
+        vStackBottomConstraint = vStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0)
+        
         NSLayoutConstraint.activate([
             vStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
-            vStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
+            vStackBottomConstraint,
             vStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
             vStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0),
             
-            fabButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            fabButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+            fabButton.trailingAnchor.constraint(equalTo: vStack.trailingAnchor, constant: -20),
+            fabButton.bottomAnchor.constraint(equalTo: vStack.bottomAnchor, constant: -20),
         ])
         
         tableView.dataSource = self
@@ -98,6 +101,24 @@ class DashboardViewController: BaseViewController<DashboardViewModel> {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         viewModel.initial()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardWillShow(notification: Notification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            vStackBottomConstraint.constant = -keyboardSize.height + 100
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: Notification) {
+        vStackBottomConstraint.constant = 0
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
     }
 }
 

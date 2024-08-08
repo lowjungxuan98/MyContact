@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 import RxRelay
 import RxCocoa
+import Toast_Swift
 
 class BaseViewController<VM>: UIViewController where VM: BaseViewModel {
     
@@ -140,6 +141,10 @@ class BaseViewController<VM>: UIViewController where VM: BaseViewModel {
     
     func setTitle(_ title: String) {
         titleLabel.text = title
+    }
+    
+    func showToast(_ s: String, completion: ((_ didTap: Bool) -> Void)? = nil) {
+        self.view.makeToast(s, duration: 1.0, position: .center, style: ToastStyle(), completion: completion)
     }
 }
 
