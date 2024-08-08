@@ -11,7 +11,7 @@ import RxRelay
 class DashboardViewModel: BaseViewModel {
     var searchRelay: BehaviorRelay<String?> = BehaviorRelay(value: nil)
     var data: BehaviorRelay<[(String, [Person])]?> = BehaviorRelay(value: nil)
-
+    
     func initial() {
         if let persons = DataManager.shared.readData()?.sorted(by: { $0.key < $1.key }) {
             data.accept(persons)
@@ -27,5 +27,10 @@ class DashboardViewModel: BaseViewModel {
         } else {
             data.accept(DataManager.shared.searchPersons(with: search).sorted(by: { $0.key < $1.key }))
         }
+    }
+    
+    func refresh() {
+        DataManager.shared.resetData()
+        initial()
     }
 }

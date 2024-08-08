@@ -57,8 +57,14 @@ class DashboardViewController: BaseViewController<DashboardViewModel> {
         return view
     }()
     
+    private let refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = ColorPalette.shared.blue_0077B6
+        return refreshControl
+    }()
+    
     private var vStackBottomConstraint: NSLayoutConstraint!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -80,6 +86,7 @@ class DashboardViewController: BaseViewController<DashboardViewModel> {
             fabButton.bottomAnchor.constraint(equalTo: vStack.bottomAnchor, constant: -20),
         ])
         
+        tableView.refreshControl = refreshControl
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -87,13 +94,19 @@ class DashboardViewController: BaseViewController<DashboardViewModel> {
             searchTextField.textField.rx.text <-> viewModel.searchRelay,
             viewModel.data.asObservable().subscribe(onNext: { _ in
                 self.tableView.reloadData()
+                self.refreshControl.endRefreshing()
             }),
             viewModel.searchRelay.subscribe(onNext: { _ in
                 self.viewModel.search()
             }),
             fabButton.rx.tap.bind(onNext: { _ in
                 self.viewModel.selectedPerson.accept(nil)
-            })
+            }),
+            refreshControl.rx.controlEvent(.valueChanged)
+                .subscribe(onNext: { [weak self] in
+                    print("Refresh triggered")
+                    self?.viewModel.refresh()
+                })
         )
     }
     
@@ -140,11 +153,11 @@ extension DashboardViewController: UITableViewDataSource, UITableViewDelegate {
         cell.selectionStyle = .none
         return cell
     }
-
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 75
     }
-
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ContactHeaderView.reuseIdentifier) as? ContactHeaderView else {
             return UIView()

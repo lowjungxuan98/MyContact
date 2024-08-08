@@ -52,6 +52,7 @@ class DataManager {
     static let shared = DataManager()
     
     private let fileName = "data.json"
+    private let originalFileName = "original.json"
     
     private init() {
         copyFileToDocumentsDirectoryIfNeeded()
@@ -60,6 +61,11 @@ class DataManager {
     private var fileURL: URL {
         let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         return documentDirectory.appendingPathComponent(fileName)
+    }
+    
+    private var originalFileURL: URL {
+        let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        return documentDirectory.appendingPathComponent(originalFileName)
     }
     
     private func copyFileToDocumentsDirectoryIfNeeded() {
@@ -152,5 +158,23 @@ class DataManager {
             result.append(randomCharacter)
         }
         return result
+    }
+    
+    func resetData() {
+        let fileManager = FileManager.default
+        do {
+            if fileManager.fileExists(atPath: fileURL.path) {
+                try fileManager.removeItem(at: fileURL)
+            }
+            if let bundleURL = Bundle.main.url(forResource: originalFileName, withExtension: nil) {
+                try fileManager.copyItem(at: bundleURL, to: fileURL)
+            } else if fileManager.fileExists(atPath: originalFileURL.path) {
+                try fileManager.copyItem(at: originalFileURL, to: fileURL)
+            } else {
+                print("Original file not found in bundle or documents directory.")
+            }
+        } catch {
+            print("Error resetting data: \(error)")
+        }
     }
 }
