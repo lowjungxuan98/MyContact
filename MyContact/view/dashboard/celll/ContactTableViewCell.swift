@@ -61,7 +61,7 @@ class ContactTableViewCell: UITableViewCell {
     
     func configure(with person: Person, isCurrentUser: Bool = false) {
         avatar.configure(with: person.nameShortForm, font: .systemFont(ofSize: 20))
-        nameLabel.text = person.firstName + " " + person.lastName
+        nameLabel.text = (person.firstName) + " " + (person.lastName)
         youLabel.isHidden = !isCurrentUser
     }
 }

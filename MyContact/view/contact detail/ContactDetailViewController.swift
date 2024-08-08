@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import RxBiBinding
 
 class ContactDetailViewController: BaseViewController<ContactDetailViewModel> {
     
@@ -69,10 +70,30 @@ class ContactDetailViewController: BaseViewController<ContactDetailViewModel> {
         ])
         
         disposeBag.insert(
-            viewModel.data.bind(onNext: { _ in
+            viewModel.data.bind(onNext: { person in
+                self.viewModel.newData = person
                 self.reloadView()
+            }),
+            viewModel.firstNameRelay.subscribe(onNext: { s in
+                self.viewModel.newData?.updateFirstName(s)
+            }),
+            viewModel.lastNameRelay.subscribe(onNext: { s in
+                self.viewModel.newData?.updateLastName(s)
+            }),
+            viewModel.emailRelay.subscribe(onNext: { s in
+                self.viewModel.newData?.updateEmail(s)
+            }),
+            viewModel.dobRelay.subscribe(onNext: { s in
+                self.viewModel.newData?.updateDob(s)
             })
         )
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if viewModel.data.value?.id == nil {
+            viewModel.newData = Person(firstName: viewModel.firstNameRelay.value ?? "", lastName: viewModel.lastNameRelay.value ?? "")
+        }
     }
     
     func reloadView() {
@@ -87,16 +108,26 @@ class ContactDetailViewController: BaseViewController<ContactDetailViewModel> {
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: "MainInformationForm") as? FormTableViewCell {
             let form = MainInformationForm()
-            form.person = viewModel.data.value
             cell.configure(with: form)
             cell.selectionStyle = .none
+            disposeBag.insert(
+                cell.textField1.textField.rx.text <-> viewModel.firstNameRelay,
+                cell.textField2.textField.rx.text <-> viewModel.lastNameRelay
+            )
+            viewModel.firstNameRelay.accept(viewModel.data.value?.firstName)
+            viewModel.lastNameRelay.accept(viewModel.data.value?.lastName)
             cells.append(cell)
         }
         if let cell = tableView.dequeueReusableCell(withIdentifier: "SubInformationForm") as? FormTableViewCell {
             let form = SubInformationForm()
-            form.person = viewModel.data.value
             cell.configure(with: form)
             cell.selectionStyle = .none
+            disposeBag.insert(
+                cell.textField1.textField.rx.text <-> viewModel.emailRelay,
+                cell.textField2.textField.rx.text <-> viewModel.dobRelay
+            )
+            viewModel.emailRelay.accept(viewModel.data.value?.email)
+            viewModel.dobRelay.accept(viewModel.data.value?.dob)
             cells.append(cell)
         }
         if let cell = tableView.dequeueReusableCell(withIdentifier: "FormButtonTableViewCell") as? FormButtonTableViewCell {
@@ -111,14 +142,25 @@ class ContactDetailViewController: BaseViewController<ContactDetailViewModel> {
             disposeBag.insert(
                 cell.primary.rx.tap
                     .bind { _ in
-                        self.showToast("Sucessfully") { didTap in
-                            self.navigationController?.popViewController(animated: true)
+                        print("abudebug \(String(describing: self.viewModel.newData))")
+                        if let person = self.viewModel.newData {
+                            if cell.primary.titleLabel?.text == "Update" {
+                                DataManager.shared.updatePerson(person)
+                            } else {
+                                DataManager.shared.addPerson(person)
+                            }
+                            self.showToast("\(cell.primary.titleLabel?.text ?? "") Sucessfully") { didTap in
+                                self.navigationController?.popViewController(animated: true)
+                            }
                         }
                     },
                 cell.secondary.rx.tap
                     .bind(onNext: { _ in
-                        self.showToast("Deleted") { didTap in
-                            self.navigationController?.popViewController(animated: true)
+                        if let id = self.viewModel.data.value?.id {
+                            DataManager.shared.deletePerson(byId: id)
+                            self.showToast("Deleted") { didTap in
+                                self.navigationController?.popViewController(animated: true)
+                            }
                         }
                     })
             )

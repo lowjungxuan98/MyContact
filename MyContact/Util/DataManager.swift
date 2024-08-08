@@ -8,15 +8,42 @@
 import Foundation
 
 struct Person: Codable {
-    let id: String
-    let firstName: String
-    let lastName: String
-    let email: String?
-    let dob: String?
+    var id: String?
+    var firstName: String
+    var lastName: String
+    var email: String?
+    var dob: String?
     var nameShortForm: String {
         let firstInitial = firstName.first?.uppercased() ?? ""
         let lastInitial = lastName.first?.uppercased() ?? ""
         return firstInitial + lastInitial
+    }
+    
+    mutating func updateFirstName(_ t: String?) {
+        firstName = t ?? ""
+    }
+    
+    mutating func updateLastName(_ t: String?) {
+        lastName = t ?? ""
+    }
+    
+    mutating func updateEmail(_ t: String?) {
+        email = t
+    }
+    
+    mutating func updateDob(_ t: String?) {
+        dob = t
+    }
+    
+    mutating func generateRandomHexadecimalID(length: Int = 24) {
+        let characters = "0123456789abcdef"
+        var result = ""
+        for _ in 0..<length {
+            let randomIndex = Int(arc4random_uniform(UInt32(characters.count)))
+            let randomCharacter = characters[characters.index(characters.startIndex, offsetBy: randomIndex)]
+            result.append(randomCharacter)
+        }
+        id = result
     }
 }
 
@@ -74,6 +101,8 @@ class DataManager {
     
     func addPerson(_ person: Person) {
         var persons = readAllPersons()
+        var person = person
+        person.generateRandomHexadecimalID()
         persons.append(person)
         saveData(persons)
     }
@@ -112,5 +141,16 @@ class DataManager {
         }
         let groupedPersons = Dictionary(grouping: filteredPersons) { $0.firstName.first.map { String($0) } ?? "#" }
         return groupedPersons
+    }
+    
+    func generateRandomHexadecimalID(length: Int = 24) -> String {
+        let characters = "0123456789abcdef"
+        var result = ""
+        for _ in 0..<length {
+            let randomIndex = Int(arc4random_uniform(UInt32(characters.count)))
+            let randomCharacter = characters[characters.index(characters.startIndex, offsetBy: randomIndex)]
+            result.append(randomCharacter)
+        }
+        return result
     }
 }

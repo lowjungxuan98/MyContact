@@ -27,9 +27,9 @@ class FormButtonTableViewCell: UITableViewCell {
     let secondary: UIButton = {
         let view = UIButton()
         view.layer.borderWidth = 1
-        view.layer.borderColor = UIColor.red.cgColor
+        view.layer.borderColor = ColorPalette.shared.red_ED1C2E.cgColor
         view.layer.cornerRadius = 10
-        view.setTitleColor(.red, for: .normal)
+        view.setTitleColor(ColorPalette.shared.red_ED1C2E, for: .normal)
         view.setTitle("Remove", for: .normal)
         view.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         view.heightAnchor.constraint(equalToConstant: 53).isActive = true

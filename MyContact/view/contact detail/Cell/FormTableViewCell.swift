@@ -9,19 +9,16 @@ import Foundation
 import UIKit
 
 protocol FormType {
-    var person: Person? { get set }
     func title() -> String
     
     func label1() -> String
     func placeholder1() -> String
     func icon1() -> UIImage
-    func data1() -> String?
     func required1() -> Bool
     
     func label2() -> String
     func placeholder2() -> String
     func icon2() -> UIImage
-    func data2() -> String?
     func required2() -> Bool
 }
 
@@ -36,8 +33,6 @@ extension FormType {
 }
 
 class MainInformationForm: FormType {
-    var person: Person?
-    
     func title() -> String {
         "Main Information"
     }
@@ -54,10 +49,6 @@ class MainInformationForm: FormType {
         MyImage.shared.icPerson
     }
     
-    func data1() -> String? {
-        person?.firstName
-    }
-    
     func label2() -> String {
         "Last Name"
     }
@@ -69,15 +60,9 @@ class MainInformationForm: FormType {
     func icon2() -> UIImage {
         MyImage.shared.icPerson
     }
-    
-    func data2() -> String? {
-        person?.lastName
-    }
 }
 
 class SubInformationForm: FormType {
-    var person: Person?
-    
     func title() -> String {
         "Sub Information"
     }
@@ -94,10 +79,6 @@ class SubInformationForm: FormType {
         MyImage.shared.icEmail
     }
     
-    func data1() -> String? {
-        person?.email
-    }
-    
     func required1() -> Bool {
         false
     }
@@ -112,10 +93,6 @@ class SubInformationForm: FormType {
     
     func icon2() -> UIImage {
         MyImage.shared.icCalendar
-    }
-    
-    func data2() -> String? {
-        person?.dob
     }
     
     func required2() -> Bool {
@@ -197,15 +174,12 @@ class FormTableViewCell: UITableViewCell {
             placeholder: form.placeholder1(),
             leading: form.icon1(),
             required: form.required2()
-        )
-        textField1.textField.text = form.data1()
-        
+        )        
         textField2.configure(
             labelText: form.label2(),
             placeholder: form.placeholder2(),
             leading: form.icon2(),
             required: form.required2()
         )
-        textField2.textField.text = form.data2()
     }
 }
