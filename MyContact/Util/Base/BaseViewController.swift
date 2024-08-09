@@ -135,7 +135,14 @@ class BaseViewController<VM>: UIViewController where VM: BaseViewModel {
                 .skip(1)
                 .subscribe(onNext: { _ in
                 self.routeToContactDetail()
-            })
+            }),
+            viewModel.showToast
+                .skip(1)
+                .subscribe(onNext: { str in
+                    self.showToast(str ?? "") { didTap in
+                        self.viewModel.endToast.accept(didTap)
+                    }
+                })
         )
     }
     

@@ -90,9 +90,6 @@ class DataManager {
             return nil
         }
         persons.sort { $0.firstName < $1.firstName }
-        persons.forEach { p in
-            print(p)
-        }
         let groupedPersons = Dictionary(grouping: persons) { $0.firstName.first.map { String($0) } ?? "#" }
         return groupedPersons
     }

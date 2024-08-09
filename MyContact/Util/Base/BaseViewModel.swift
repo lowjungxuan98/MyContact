@@ -10,6 +10,8 @@ import RxRelay
 
 class BaseViewModel {
     var selectedPerson: BehaviorRelay<Person?> = BehaviorRelay(value: nil)
+    var showToast: BehaviorRelay<String?> = BehaviorRelay(value: nil)
+    var endToast: BehaviorRelay<Bool> = BehaviorRelay(value: false)
     
 //    init() {
 //        print("BaseViewModel initialized with selectedUserId: \(selectedUserId.value ?? "nil")")
